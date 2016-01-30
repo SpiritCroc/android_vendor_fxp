@@ -18,6 +18,9 @@ $(foreach m, $(qcom_makefiles),\
 
 .PHONY: device-proprietary-blobs
 device-proprietary-blobs:
+	-$(hide) $(foreach d, $(devices),\
+		rm device/sony/$(d)/proprietary-files.txt;)
+	-$(hide) rm device/sony/kitakami/proprietary-files-qc.txt
 	$(hide) $(foreach d, $(devices),\
 		$(foreach p,$(sort $(call get-proprietary-files-list, \
 		$($(d)_p))),echo $(p) >> device/sony/$(d)/proprietary-files.txt;))
