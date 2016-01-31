@@ -2,11 +2,8 @@
 devices ?= kitakami ivy karin sumire suzuran # karin_windy satsuki
 qcom_makefiles ?= \
 	vendor/qcom/prebuilt/qcom-vendor.mk \
-	vendor/qcom/prebuilt/qcom-partial-32bit.mk \
 	vendor/qcom/prebuilt/qcom-partial-common.mk \
-	vendor/qcom/prebuilt/qcom-partial-adreno-a3xx.mk \
-	vendor/qcom/prebuilt/qcom-partial-adreno-a4xx.mk \
-#	vendor/qcom/proprietary/qcom-firmware.mk \ # Not needed on 8994
+	vendor/qcom/prebuilt/qcom-partial-adreno-a4xx.mk
 
 $(foreach d, $(devices),\
 	$(eval $(d)_p := $(shell MAKEFILE_FOR_VALUE="vendor/sony/$(d)/$(d)-partial.mk" \
