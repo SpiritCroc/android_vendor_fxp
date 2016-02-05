@@ -2,7 +2,6 @@
 # Copy AOSP blobs to a CM tree
 
 set -o errexit
-set -x
 
 arg="${1}"
 
