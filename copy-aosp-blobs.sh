@@ -31,10 +31,11 @@ yukon_qcom_dirs="msm8226 adreno/a3xx firmware"
 copy_a2c() {
 	src=$1
 	dst=$2
-	if $3 ; then
+	rm_dst=${3:-false}
+	if $rm_dst ; then
 		rm -rf $cm_path/vendor/sony/$dst/proprietary
-		mkdir -p $cm_path/vendor/sony/$dst/proprietary
 	fi
+	mkdir -p $cm_path/vendor/sony/$dst/proprietary
 	cp -a $aosp_path/vendor/$src $cm_path/vendor/sony/$dst/proprietary/
 	rm $cm_path/vendor/sony/$dst/proprietary/Android.mk
 }
@@ -79,16 +80,16 @@ for c in $common; do
 	[[ $c == yukon ]] && cm_c=$c
 	if [[ $c == shinano ]]; then
 		for db in sirius castor; do
-			copy_a2c sony/shinano/msm8974ab/* $db false
+			copy_a2c sony/shinano/msm8974ab/* $db
 		done
 		for dc in z3 z3c scorpion; do
-			copy_a2c sony/shinano/msm8974ac/* $dc false
+			copy_a2c sony/shinano/msm8974ac/* $dc
 		done
 	fi
-	copy_a2c sony/$c/proprietary/* $cm_c false
+	copy_a2c sony/$c/proprietary/* $cm_c
 done
 
-# vendor/qcom
+# Sony vendor/qcom
 eval qcom_dirs=\$${common}_qcom_dirs
 for qd in $qcom_dirs; do
 	for qc in $common; do
@@ -96,6 +97,27 @@ for qd in $qcom_dirs; do
 		[[ $c == yukon ]] && cm_qc=$qc
 		[[ $c == rhine ]] && cm_qc=msm8974-common
 		[[ $c == shinano ]] && cm_qc=msm8974-common
-		copy_a2c qcom/prebuilt/proprietary/$qd/* $cm_qc false
+		copy_a2c qcom/prebuilt/proprietary/$qd/* $cm_qc
+	done
+done
+
+# Modem firmware (vendor/qcom/proprietary)
+for qfc in $common; do
+	for qfd in $devices; do
+		if [[ $qfc == yukon ]] ; then
+			copy_a2c qcom/proprietary/msm8226/$qfd/* $qfd
+		elif [[ $qfc == rhine ]] ; then
+			copy_a2c qcom/proprietary/msm8974aa/$qfd/* $qfd
+		elif [[ $qfc == shinano ]] ; then
+			if [[ $qfd == sirius || $qfd == castor ]] ; then
+				copy_a2c qcom/proprietary/msm8974ab/* $qfd
+			elif [[ $qfd == scorpion ]] ; then
+				copy_a2c qcom/proprietary/msm8974ac/* $qfd
+			elif [[ $qfd == leo ]] ; then
+				copy_a2c qcom/proprietary/msm8974ac/* z3
+			elif [[ $qfd == aries ]] ; then
+				copy_a2c qcom/proprietary/msm8974ac/* z3c
+			fi
+		fi
 	done
 done
