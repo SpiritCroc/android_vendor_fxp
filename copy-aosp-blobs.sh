@@ -36,6 +36,11 @@ copy_a2c() {
 	rm_dst=${3:-false}
 	if $rm_dst ; then
 		rm -rf $cm_path/vendor/sony/$dst/proprietary
+		if [[ -e $cm_path/device/sony/$dst/proprietary-files.txt ]] ; then
+			for f in `cat $cm_path/device/sony/$dst/proprietary-files.txt | grep -v ^# | grep -v ^$`; do
+				git -C $cm_path/vendor/sony checkout -- $dst/proprietary/$f
+			done
+		fi
 	fi
 	mkdir -p $cm_path/vendor/sony/$dst/proprietary
 	cp -a $aosp_path/vendor/$src $cm_path/vendor/sony/$dst/proprietary/
