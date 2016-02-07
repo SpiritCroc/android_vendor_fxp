@@ -127,3 +127,14 @@ yukon-proprietary-filelist:
 	$(hide) $(foreach d, $(yukon_devices),\
 		$(foreach p,$(sort $(call get-proprietary-files-list, \
 		$($(yukon_firmware_makefile)_p))),echo $(p) >> $(DEVICE_PATH)/$(d)/proprietary-files-fw.txt;))
+
+ifneq ($(ONE_SHOT_MAKEFILE),)
+subdirs := vendor/qcom/prebuilt vendor/qcom/proprietary \
+	$(foreach d, $(kitakami_devices) $(shinano_normal_devices) $(rhine_devices) $(yukon_devices) kitakami shinano rhine yukon,\
+	vendor/sony/$(d))
+subdir_makefiles := \
+        $(shell build/tools/findleaves.py $(FIND_LEAVES_EXCLUDES) $(subdirs) Android.mk)
+$(foreach mk, $(subdir_makefiles), $(eval include $(mk)))
+ALL_MODULES += $(foreach c, kitakami shinano rhine yukon,\
+				$(if $(findstring $(TARGET_DEVICE), $($(c)_devices)),$(c)-proprietary-filelist))
+endif
