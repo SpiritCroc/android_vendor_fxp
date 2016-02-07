@@ -43,23 +43,23 @@ copy_a2c() {
 case ${arg} in
 	msm8974)
 		common="rhine shinano"
-		devices="sirius castor leo aries scorpion amami honami togari"
+		devices="${rhine_devices} ${shinano_devices}"
 		;;
 	shinano)
 		common=shinano
-		devices="sirius castor leo aries scorpion"
+		devices=${shinano_devices}
 		;;
 	rhine)
 		common=rhine
-		devices="amami honami togari"
+		devices=${rhine_devices}
 		;;
 	kitakami)
 		common=kitakami
-		devices="ivy karin sumire suzuran satsuki"
+		devices=${kitakami_devices}
 		;;
 	yukon)
 		common=yukon
-		devices="eagle tianchi seagull flamingo"
+		devices=${yukon_devices}
 		;;
 	*)
 		usage
