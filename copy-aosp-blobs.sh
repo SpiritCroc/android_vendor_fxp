@@ -16,7 +16,7 @@ usage() {
 aosp_path=${AOSP_PATH:-~/android/aosp/6.0}
 cm_path=${CM_PATH:-~/android/cm/13}
 
-kitakami_devices="ivy karin sumire suzuran satsuki"
+kitakami_devices="ivy karin sumire suzuran" # satsuki
 kitakami_qcom_dirs="msm8994 adreno/a4xx firmware"
 
 shinano_devices="sirius castor leo aries scorpion"

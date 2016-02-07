@@ -16,7 +16,7 @@ usage() {
 aosp_path=${AOSP_PATH:-~/android/aosp/6.0}
 
 platforms="kitakami shinano rhine yukon"
-kitakami_devices="ivy karin sumire suzuran satsuki"
+kitakami_devices="ivy karin sumire suzuran" # satsuki
 shinano_devices="sirius castor leo aries scorpion"
 rhine_devices="amami honami togari"
 yukon_devices="eagle tianchi seagull flamingo"

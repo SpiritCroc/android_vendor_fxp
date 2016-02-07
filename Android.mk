@@ -1,7 +1,7 @@
 CM_PATH ?= ~/android/cm/13
 DEVICE_PATH := $(CM_PATH)/device/sony
 
-kitakami_devices := ivy karin sumire suzuran satsuki
+kitakami_devices := ivy karin sumire suzuran # satsuki
 kitakami_qcom_makefiles := \
 	vendor/qcom/prebuilt/qcom-partial-adreno-a4xx.mk \
 	vendor/qcom/prebuilt/qcom-partial-firmware.mk \
