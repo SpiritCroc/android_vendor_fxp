@@ -28,6 +28,8 @@ rhine_qcom_dirs="msm8974 adreno/a3xx firmware"
 yukon_devices="eagle tianchi seagull flamingo"
 yukon_qcom_dirs="msm8226 adreno/a3xx firmware"
 
+windy_devices="castor scorpion karin"
+
 copy_a2c() {
 	src=$1
 	dst=$2
@@ -71,6 +73,9 @@ for d in $devices; do
 	cm_d=$d
 	[[ $d == leo ]] && cm_d=z3
 	[[ $d == aries ]] && cm_d=z3c
+	for wd in $windy_devices; do
+		[[ $d == $wd ]] && cm_d=${wd}_windy
+	done
 	copy_a2c sony/$d/proprietary/* $cm_d true
 done
 

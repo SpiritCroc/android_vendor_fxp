@@ -71,6 +71,7 @@ kitakami-proprietary-filelist:
 	$(hide) $(foreach m, $(kitakami_qcom_makefiles),\
 		$(foreach p,$(sort $(call get-proprietary-files-list, \
 		$($(m)_p))),echo $(p) >> $(DEVICE_PATH)/kitakami-common/proprietary-files-qc.txt;))
+	-$(hide) mv $(DEVICE_PATH)/karin/proprietary-files-sony.txt $(DEVICE_PATH)/karin_windy/proprietary-files-sony.txt;
 
 .PHONY: shinano-proprietary-filelist
 shinano-proprietary-filelist:
@@ -89,6 +90,8 @@ shinano-proprietary-filelist:
 	$(hide) $(foreach d, $(shinano_devices),\
 		$(foreach p,$(sort $(call get-proprietary-files-list, \
 		$($(shinano_firmware_makefile)_p))),echo $(p) >> $(DEVICE_PATH)/$(d)/proprietary-files-fw.txt;))
+	-$(hide) mv $(DEVICE_PATH)/castor/proprietary-files-sony.txt $(DEVICE_PATH)/castor_windy/proprietary-files-sony.txt;
+	-$(hide) mv $(DEVICE_PATH)/scorpion/proprietary-files-sony.txt $(DEVICE_PATH)/scorpion_windy/proprietary-files-sony.txt;
 
 .PHONY: rhine-proprietary-filelist
 rhine-proprietary-filelist:
