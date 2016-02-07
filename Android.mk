@@ -16,8 +16,6 @@ shinano_qcom_makefiles := \
 	vendor/qcom/prebuilt/qcom-partial-firmware.mk \
 	vendor/qcom/prebuilt/qcom-partial-msm8974.mk \
 	vendor/qcom/prebuilt/qcom-vendor.mk
-shinano_firmware_makefile := \
-	vendor/qcom/proprietary/qcom-modem-firmware.mk
 
 rhine_devices := amami honami togari
 rhine_qcom_makefiles := \
@@ -25,8 +23,6 @@ rhine_qcom_makefiles := \
 	vendor/qcom/prebuilt/qcom-partial-firmware.mk \
 	vendor/qcom/prebuilt/qcom-partial-msm8974.mk \
 	vendor/qcom/prebuilt/qcom-vendor.mk
-rhine_firmware_makefile := \
-	vendor/qcom/proprietary/qcom-modem-firmware.mk
 
 yukon_devices := eagle tianchi seagull flamingo
 yukon_qcom_makefiles := \
@@ -34,8 +30,6 @@ yukon_qcom_makefiles := \
 	vendor/qcom/prebuilt/qcom-partial-firmware.mk \
 	vendor/qcom/prebuilt/qcom-partial-msm8226.mk \
 	vendor/qcom/prebuilt/qcom-vendor.mk
-yukon_firmware_makefile := \
-	vendor/qcom/proprietary/qcom-modem-firmware.mk
 
 qcom_makefiles := $(call uniq,\
 	$(kitakami_qcom_makefiles) $(shinano_qcom_makefiles) $(rhine_qcom_makefiles) $(yukon_qcom_makefiles))
@@ -58,14 +52,30 @@ $(foreach m, $(qcom_makefiles),\
 
 $(eval $(firmware_makefile)_p := $(call get-packages-from-makefile, $(firmware_makefile)))
 
+ifeq ($(TARGET_DEVICE),leo)
+CM_DEVICE := z3
+else ifeq ($(TARGET_DEVICE),aries)
+CM_DEVICE := z3c
+else
+CM_DEVICE := $(TARGET_DEVICE)
+endif
+
+define device-proprietary-filelist
+-$(hide) rm $(DEVICE_PATH)/$(CM_DEVICE)/proprietary-files-sony.txt;\
+$(foreach p,$(sort $(call get-proprietary-files-list, \
+		$($(CM_DEVICE)_p))),echo $(p) >> $(DEVICE_PATH)/$(CM_DEVICE)/proprietary-files-sony.txt;)
+endef
+
+define device-proprietary-firmware-filelist
+-$(hide) rm $(DEVICE_PATH)/$(CM_DEVICE)/proprietary-files-fw.txt;\
+$(foreach p,$(sort $(call get-proprietary-files-list, \
+		$($(firmware_makefile)_p))),echo $(p) >> $(DEVICE_PATH)/$(CM_DEVICE)/proprietary-files-fw.txt;)
+endef
+
 .PHONY: kitakami-proprietary-filelist
 kitakami-proprietary-filelist:
-	-$(hide) $(foreach d, $(kitakami_devices),\
-		rm $(DEVICE_PATH)/$(d)/proprietary-files*.txt;)
-	-$(hide) rm $(DEVICE_PATH)/kitakami-common/proprietary-files*.txt
-	$(hide) $(foreach d, $(kitakami_devices),\
-		$(foreach p,$(sort $(call get-proprietary-files-list, \
-		$($(d)_p))),echo $(p) >> $(DEVICE_PATH)/$(d)/proprietary-files-sony.txt;))
+	-$(hide) rm $(DEVICE_PATH)/kitakami-common/proprietary-files-*.txt
+	$(hide) $(device-proprietary-filelist)
 	$(hide) $(foreach p,$(sort $(call get-proprietary-files-list, \
 		$(kitakami_p))),echo $(p) >> $(DEVICE_PATH)/kitakami-common/proprietary-files-sony.txt;)
 	$(hide) $(foreach m, $(kitakami_qcom_makefiles),\
@@ -75,61 +85,43 @@ kitakami-proprietary-filelist:
 
 .PHONY: shinano-proprietary-filelist
 shinano-proprietary-filelist:
-	-$(hide) $(foreach d, $(shinano_devices),\
-		rm $(DEVICE_PATH)/$(d)/proprietary-files*.txt;)
-	-$(hide) rm $(DEVICE_PATH)/shinano-common/proprietary-files*.txt
-	-$(hide) rm $(DEVICE_PATH)/msm8974-common/proprietary-files*.txt
-	$(hide) $(foreach d, $(shinano_devices),\
-		$(foreach p,$(sort $(call get-proprietary-files-list, \
-		$($(d)_p))),echo $(p) >> $(DEVICE_PATH)/$(d)/proprietary-files-sony.txt;))
+	-$(hide) rm $(DEVICE_PATH)/shinano-common/proprietary-files-*.txt
+	-$(hide) rm $(DEVICE_PATH)/msm8974-common/proprietary-files-*.txt
+	$(hide) $(device-proprietary-filelist)
 	$(hide) $(foreach p,$(sort $(call get-proprietary-files-list, \
 		$(shinano_p))),echo $(p) >> $(DEVICE_PATH)/shinano-common/proprietary-files-sony.txt;)
 	$(hide) $(foreach m, $(shinano_qcom_makefiles),\
 		$(foreach p,$(sort $(call get-proprietary-files-list, \
 		$($(m)_p))),echo $(p) >> $(DEVICE_PATH)/msm8974-common/proprietary-files-qc.txt;))
-	$(hide) $(foreach d, $(shinano_devices),\
-		$(foreach p,$(sort $(call get-proprietary-files-list, \
-		$($(shinano_firmware_makefile)_p))),echo $(p) >> $(DEVICE_PATH)/$(d)/proprietary-files-fw.txt;))
+	$(hide) $(device-proprietary-firmware-filelist)
 	-$(hide) mv $(DEVICE_PATH)/castor/proprietary-files-sony.txt $(DEVICE_PATH)/castor_windy/proprietary-files-sony.txt;
 	-$(hide) mv $(DEVICE_PATH)/scorpion/proprietary-files-sony.txt $(DEVICE_PATH)/scorpion_windy/proprietary-files-sony.txt;
 
 .PHONY: rhine-proprietary-filelist
 rhine-proprietary-filelist:
-	-$(hide) $(foreach d, $(rhine_devices),\
-		rm $(DEVICE_PATH)/$(d)/proprietary-files*.txt;)
-	-$(hide) rm $(DEVICE_PATH)/rhine-common/proprietary-files*.txt
-	-$(hide) rm $(DEVICE_PATH)/msm8974-common/proprietary-files*.txt
-	$(hide) $(foreach d, $(rhine_devices),\
-		$(foreach p,$(sort $(call get-proprietary-files-list, \
-		$($(d)_p))),echo $(p) >> $(DEVICE_PATH)/$(d)/proprietary-files-sony.txt;))
+	-$(hide) rm $(DEVICE_PATH)/rhine-common/proprietary-files-*.txt
+	-$(hide) rm $(DEVICE_PATH)/msm8974-common/proprietary-files-*.txt
+	$(hide) $(device-proprietary-filelist)
 	$(hide) $(foreach p,$(sort $(call get-proprietary-files-list, \
 		$(rhine_p))),echo $(p) >> $(DEVICE_PATH)/rhine-common/proprietary-files-sony.txt;)
 	$(hide) $(foreach m, $(rhine_qcom_makefiles),\
 		$(foreach p,$(sort $(call get-proprietary-files-list, \
 		$($(m)_p))),echo $(p) >> $(DEVICE_PATH)/msm8974-common/proprietary-files-qc.txt;))
-	$(hide) $(foreach d, $(rhine_devices),\
-		$(foreach p,$(sort $(call get-proprietary-files-list, \
-		$($(rhine_firmware_makefile)_p))),echo $(p) >> $(DEVICE_PATH)/$(d)/proprietary-files-fw.txt;))
+	$(hide) $(device-proprietary-firmware-filelist)
 
 .PHONY: msm8974-proprietary-filelist
 msm8974-proprietary-filelist: shinano-proprietary-filelist rhine-proprietary-filelist
 
 .PHONY: yukon-proprietary-filelist
 yukon-proprietary-filelist:
-	-$(hide) $(foreach d, $(yukon_devices),\
-		rm $(DEVICE_PATH)/$(d)/proprietary-files*.txt;)
-	-$(hide) rm $(DEVICE_PATH)/yukon/proprietary-files*.txt
-	$(hide) $(foreach d, $(yukon_devices),\
-		$(foreach p,$(sort $(call get-proprietary-files-list, \
-		$($(d)_p))),echo $(p) >> $(DEVICE_PATH)/$(d)/proprietary-files-sony.txt;))
+	-$(hide) rm $(DEVICE_PATH)/yukon/proprietary-files-*.txt
+	$(hide) $(device-proprietary-filelist)
 	$(hide) $(foreach p,$(sort $(call get-proprietary-files-list, \
 		$(yukon_p))),echo $(p) >> $(DEVICE_PATH)/yukon/proprietary-files-sony.txt;)
 	$(hide) $(foreach m, $(yukon_qcom_makefiles),\
 		$(foreach p,$(sort $(call get-proprietary-files-list, \
 		$($(m)_p))),echo $(p) >> $(DEVICE_PATH)/yukon/proprietary-files-qc.txt;))
-	$(hide) $(foreach d, $(yukon_devices),\
-		$(foreach p,$(sort $(call get-proprietary-files-list, \
-		$($(yukon_firmware_makefile)_p))),echo $(p) >> $(DEVICE_PATH)/$(d)/proprietary-files-fw.txt;))
+	$(hide) $(device-proprietary-firmware-filelist)
 
 ifneq ($(ONE_SHOT_MAKEFILE),)
 subdirs := vendor/qcom/prebuilt vendor/qcom/proprietary \
