@@ -89,10 +89,10 @@ for c in $common; do
 	cm_c=${c}-common
 	[[ $c == yukon ]] && cm_c=$c
 	if [[ $c == shinano ]]; then
-		for db in sirius castor; do
+		for db in sirius castor_windy; do
 			copy_a2c sony/shinano/msm8974ab/* $db
 		done
-		for dc in z3 z3c scorpion; do
+		for dc in z3 z3c scorpion_windy; do
 			copy_a2c sony/shinano/msm8974ac/* $dc
 		done
 	fi
