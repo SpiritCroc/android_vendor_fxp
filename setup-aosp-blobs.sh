@@ -1,6 +1,8 @@
 #!/bin/bash
 # Copy the blobs, and generate the proprietary file list
 
+execution_path=$PWD
+
 set -o errexit
 
 arg="${1}"
@@ -67,7 +69,7 @@ for c in $common; do
 done
 
 # Copy blobs
-FP=$(cd ${0%/*} && pwd -P)
+FP=$(cd $execution_path && pwd -P)
 for c in $common; do
 	${FP}/copy-aosp-blobs.sh $c
 done
