@@ -4,7 +4,6 @@ DEVICE_PATH := $(CM_PATH)/device/sony
 kitakami_devices := ivy karin sumire suzuran # satsuki
 kitakami_qcom_makefiles := \
 	vendor/qcom/prebuilt/qcom-partial-adreno-a4xx.mk \
-	vendor/qcom/prebuilt/qcom-partial-firmware.mk \
 	vendor/qcom/prebuilt/qcom-partial-msm8994.mk \
 	vendor/qcom/prebuilt/qcom-vendor.mk
 
@@ -13,7 +12,6 @@ shinano_special_devices := z3 z3c
 shinano_devices := $(shinano_normal_devices) $(shinano_special_devices)
 shinano_qcom_makefiles := \
 	vendor/qcom/prebuilt/qcom-partial-adreno-a3xx.mk \
-	vendor/qcom/prebuilt/qcom-partial-firmware.mk \
 	vendor/qcom/prebuilt/qcom-partial-msm8974.mk \
 	vendor/qcom/prebuilt/qcom-vendor.mk
 shinano_msm8974ab_makefile := \
@@ -24,20 +22,18 @@ shinano_msm8974ac_makefile := \
 rhine_devices := amami honami togari
 rhine_qcom_makefiles := \
 	vendor/qcom/prebuilt/qcom-partial-adreno-a3xx.mk \
-	vendor/qcom/prebuilt/qcom-partial-firmware.mk \
 	vendor/qcom/prebuilt/qcom-partial-msm8974.mk \
 	vendor/qcom/prebuilt/qcom-vendor.mk
 
 yukon_devices := eagle tianchi seagull flamingo
 yukon_qcom_makefiles := \
 	vendor/qcom/prebuilt/qcom-partial-adreno-a3xx.mk \
-	vendor/qcom/prebuilt/qcom-partial-firmware.mk \
 	vendor/qcom/prebuilt/qcom-partial-msm8226.mk \
 	vendor/qcom/prebuilt/qcom-vendor.mk
 
 qcom_makefiles := $(call uniq,\
 	$(kitakami_qcom_makefiles) $(shinano_qcom_makefiles) $(rhine_qcom_makefiles) $(yukon_qcom_makefiles))
-firmware_makefile := vendor/qcom/proprietary/qcom-modem-firmware.mk
+firmware_makefile := vendor/qcom/firmware/qcom-modem-firmware.mk
 
 
 # $(1) path to makefile
